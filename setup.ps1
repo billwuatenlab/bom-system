@@ -7,7 +7,7 @@ Set-Location C:\BOM\server
 
 # Create .env
 $envContent = @"
-DATABASE_URL="sqlserver://localhost:1433;database=BOM;user=SA;password=BomSystem@2026;encrypt=true;trustServerCertificate=true"
+DATABASE_URL="sqlserver://localhost:1433;database=BOM;user=ATENLAB-ERP%5CAdminA1ERP;password=atenlaberpadminpw12345%2A;encrypt=true;trustServerCertificate=true"
 JWT_SECRET="bom-system-secret-key-production"
 PORT=3001
 NODE_ENV=production
