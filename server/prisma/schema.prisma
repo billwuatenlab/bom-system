@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Material {
+  id            String   @id @db.NVarChar(100)   // 料號 Part Number (新品號)
+  name          String   @db.NVarChar(200)       // 品名
+  specification String?  @db.NVarChar(500)       // 規格
+  unit          String   @db.NVarChar(50)        // 單位
+  category      String?  @db.NVarChar(100)       // 品號類別
+  description   String?  @db.NVarChar(Max)       // 描述
+  stockQty      Float    @default(0)             // 庫存數量
+  safetyStock   Float    @default(0)             // 安全庫存
+  status        String?  @db.NVarChar(50)        // 狀態
+  projectCode   String?  @db.NVarChar(100)       // 專案代號
+  applicant     String?  @db.NVarChar(100)       // 申請人
+  purpose       String?  @db.NVarChar(500)       // 申請用途
+  oldPartNumber String?  @db.NVarChar(100)       // 舊品號
+  costCurrency  String?  @db.NVarChar(10)        // 成本幣別
+  costPrice     Float?                           // 成本價格
+  supplier      String?  @db.NVarChar(200)       // 廠商
+  leadTime      String?  @db.NVarChar(100)       // 交期
+  paymentTerms  String?  @db.NVarChar(200)       // 交易條件
+  partAttribute String?  @db.NVarChar(100)       // 品號屬性
+  accountingCat String?  @db.NVarChar(100)       // 會計科目
+  warehouse     String?  @db.NVarChar(100)       // 主要庫別
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  imageUrl      String?  @db.NVarChar(500)       // 物料圖片路徑
+  documents     String?  @db.NVarChar(Max)       // 文件列表 JSON array [{name, url, size, uploadedAt}]
+
+  parentRelations BomRelation[] @relation("child")
+  childRelations  BomRelation[] @relation("parent")
+  transactions    InventoryTransaction[]
+}
+
+model BomRelation {
+  id       Int    @id @default(autoincrement())
+  parentId String @db.NVarChar(100)
+  childId  String @db.NVarChar(100)
+  quantity Float
+  unit     String? @db.NVarChar(50)
+  level    Int    // 最多 9 層
+
+  parent Material @relation("parent", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  child  Material @relation("child", fields: [childId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([parentId, childId])
+}
+
+model InventoryTransaction {
+  id         Int      @id @default(autoincrement())
+  materialId String   @db.NVarChar(100)
+  type       String   @db.NVarChar(10)   // IN / OUT
+  quantity   Float
+  operator   String?  @db.NVarChar(100)
+  remark     String?  @db.NVarChar(Max)
+  createdAt  DateTime @default(now())
+
+  material Material @relation(fields: [materialId], references: [id])
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique @db.NVarChar(200)
+  name         String   @db.NVarChar(100)
+  passwordHash String   @db.NVarChar(200)
+  role         String   @default("viewer") @db.NVarChar(20) // admin / operator / viewer
+  status       String   @default("active") @db.NVarChar(20)
+  createdAt    DateTime @default(now())
+
+  logs OperationLog[]
+}
+
+model OperationLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  action    String   @db.NVarChar(50)
+  target    String?  @db.NVarChar(200)
+  detail    String?  @db.NVarChar(Max)
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+}
+
+model CategoryMeta {
+  code        String   @id @db.NVarChar(50)   // 前綴或類別代碼 e.g. "B", "B1", "B112"
+  displayName String   @db.NVarChar(200)       // 自訂顯示名稱
+  description String?  @db.NVarChar(500)       // 自訂描述
+  updatedAt   DateTime @updatedAt
+}

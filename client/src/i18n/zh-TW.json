@@ -1,0 +1,70 @@
+{
+  "app": {
+    "title": "BOM 系統平台"
+  },
+  "menu": {
+    "dashboard": "總覽",
+    "materials": "物料總覽",
+    "operations": "物料作業",
+    "system": "系統管理"
+  },
+  "dashboard": {
+    "title": "總覽",
+    "totalMaterials": "總物料數量",
+    "totalStock": "總庫存量",
+    "lowStock": "低庫存警示",
+    "recentActivity": "近期活動",
+    "workStatus": "工作狀況"
+  },
+  "materials": {
+    "title": "物料總覽",
+    "search": "搜尋物料...",
+    "partNumber": "料號",
+    "name": "名稱",
+    "spec": "規格",
+    "unit": "單位",
+    "category": "分類",
+    "stock": "庫存",
+    "safetyStock": "安全庫存",
+    "expand": "展開全部",
+    "collapse": "收合全部"
+  },
+  "operations": {
+    "title": "物料作業",
+    "add": "新增物料",
+    "edit": "修改物料",
+    "import": "Excel 匯入",
+    "inbound": "入庫",
+    "outbound": "出庫",
+    "reports": "報表",
+    "exportCsv": "匯出 CSV",
+    "exportPdf": "匯出 PDF"
+  },
+  "system": {
+    "title": "系統管理",
+    "status": "系統狀態",
+    "accounts": "帳號管理",
+    "logs": "操作日誌",
+    "dbStatus": "資料庫狀態",
+    "apiHealth": "API 狀態",
+    "role": "角色",
+    "email": "Email",
+    "name": "姓名"
+  },
+  "terminal": {
+    "title": "Claude 終端機",
+    "placeholder": "輸入指令..."
+  },
+  "common": {
+    "save": "儲存",
+    "cancel": "取消",
+    "delete": "刪除",
+    "confirm": "確認",
+    "loading": "載入中...",
+    "success": "成功",
+    "error": "錯誤",
+    "actions": "操作",
+    "submit": "送出",
+    "reset": "重設"
+  }
+}
